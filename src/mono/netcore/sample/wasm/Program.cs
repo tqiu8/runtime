@@ -125,14 +125,15 @@ public class Test
     {
         TimeZoneInfo rome = TimeZoneInfo.FindSystemTimeZoneById("Europe/Rome");
         TimeZoneInfo vatican = TimeZoneInfo.FindSystemTimeZoneById("Europe/Vatican");
-        Assert.True(rome.HasSameRules(vatican));
+        Console.WriteLine("ROME: {0}", rome.StandardName);
+        // Assert.True(rome.HasSameRules(vatican));
     }
 
     public static void Main (String[] args) {
         Console.WriteLine ("Hello, World!");
 
         // ConvertTimeFromToUtc ();
-
+        TimeZoneInfo.FindSystemTimeZoneById("Europe/London");
         HasSameRules_RomeAndVatican ();
         
 

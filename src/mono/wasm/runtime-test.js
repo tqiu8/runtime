@@ -168,38 +168,44 @@ var Module = {
 			f ();
 		}
 		if (enable_zoneinfo) {
-			// Load the zoneinfo data into the VFS rooted at /zoneinfo
+			FS.mkdir("usr")
+			Module['FS_createPath']('/', 'usr', true, true);
+			FS.mkdir("share")
+			Module['FS_createPath']('/usr', 'share', true, true);
 			FS.mkdir("zoneinfo");
-			Module['FS_createPath']('/', 'zoneinfo', true, true);
-			Module['FS_createPath']('/zoneinfo', 'Indian', true, true);
-			Module['FS_createPath']('/zoneinfo', 'Atlantic', true, true);
-			Module['FS_createPath']('/zoneinfo', 'US', true, true);
-			Module['FS_createPath']('/zoneinfo', 'Brazil', true, true);
-			Module['FS_createPath']('/zoneinfo', 'Pacific', true, true);
-			Module['FS_createPath']('/zoneinfo', 'Arctic', true, true);
-			Module['FS_createPath']('/zoneinfo', 'America', true, true);
-			Module['FS_createPath']('/zoneinfo/America', 'Indiana', true, true);
-			Module['FS_createPath']('/zoneinfo/America', 'Argentina', true, true);
-			Module['FS_createPath']('/zoneinfo/America', 'Kentucky', true, true);
-			Module['FS_createPath']('/zoneinfo/America', 'North_Dakota', true, true);
-			Module['FS_createPath']('/zoneinfo', 'Australia', true, true);
-			Module['FS_createPath']('/zoneinfo', 'Etc', true, true);
-			Module['FS_createPath']('/zoneinfo', 'Asia', true, true);
-			Module['FS_createPath']('/zoneinfo', 'Antarctica', true, true);
-			Module['FS_createPath']('/zoneinfo', 'Europe', true, true);
-			Module['FS_createPath']('/zoneinfo', 'Mexico', true, true);
-			Module['FS_createPath']('/zoneinfo', 'Africa', true, true);
-			Module['FS_createPath']('/zoneinfo', 'Chile', true, true);
-			Module['FS_createPath']('/zoneinfo', 'Canada', true, true);
-			var zoneInfoData = read ('zoneinfo.data', 'binary');
+			Module['FS_createPath']('/usr/share', 'zoneinfo', true, true);
+			Module['FS_createPath']('/usr/share/zoneinfo', 'Indian', true, true);
+			Module['FS_createPath']('/usr/share/zoneinfo', 'Atlantic', true, true);
+			Module['FS_createPath']('/usr/share/zoneinfo', 'US', true, true);
+			Module['FS_createPath']('/usr/share/zoneinfo', 'Brazil', true, true);
+			Module['FS_createPath']('/usr/share/zoneinfo', 'Pacific', true, true);
+			Module['FS_createPath']('/usr/share/zoneinfo', 'Arctic', true, true);
+			Module['FS_createPath']('/usr/share/zoneinfo', 'America', true, true);
+			Module['FS_createPath']('/usr/share/zoneinfo/America', 'Indiana', true, true);
+			Module['FS_createPath']('/usr/share/zoneinfo/America', 'Argentina', true, true);
+			Module['FS_createPath']('/usr/share/zoneinfo/America', 'Kentucky', true, true);
+			Module['FS_createPath']('/usr/share/zoneinfo/America', 'North_Dakota', true, true);
+			Module['FS_createPath']('/usr/share/zoneinfo', 'Australia', true, true);
+			Module['FS_createPath']('/usr/share/zoneinfo', 'Etc', true, true);
+			Module['FS_createPath']('/usr/share/zoneinfo', 'Asia', true, true);
+			Module['FS_createPath']('/usr/share/zoneinfo', 'Antarctica', true, true);
+			Module['FS_createPath']('/usr/share/zoneinfo', 'Europe', true, true);
+			Module['FS_createPath']('/usr/share/zoneinfo', 'Mexico', true, true);
+			Module['FS_createPath']('/usr/share/zoneinfo', 'Africa', true, true);
+			Module['FS_createPath']('/usr/share/zoneinfo', 'Chile', true, true);
+			Module['FS_createPath']('/usr/share/zoneinfo', 'Canada', true, true);
+			var zoneInfoData = new Uint8Array(read ('zoneinfo.data', 'binary'));
 			var metadata = JSON.parse(read ("mono-webassembly-zoneinfo-fs-smd.js.metadata", 'utf-8'));
 			var files = metadata.files;
 			for (var i = 0; i < files.length; ++i) {
+				console.log(files[i].start, files[i].end)
 				var byteArray = zoneInfoData.subarray(files[i].start, files[i].end);
-				var stream = FS.open(files[i].filename, 'w+');
+				console.log(files[i].filename)
+				var stream = FS.open("/usr/share" + files[i].filename, 'w+');
 				FS.write(stream, byteArray, 0, byteArray.length, 0);
 				FS.close(stream);
 			}
+			console.log("DONE");
 		};
 
 		config.loaded_cb = function () {
