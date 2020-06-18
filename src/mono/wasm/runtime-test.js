@@ -139,6 +139,13 @@ while (true) {
 }
 testArguments = args;
 
+function writeContentToFile(content, path)
+{
+	var stream = FS.open(path, 'w+');
+	FS.write(stream, content, 0, content.length, 0);
+	FS.close(stream);
+}
+
 if (typeof window == "undefined")
   load ("mono-config.js");
 
@@ -161,6 +168,37 @@ var Module = {
 		var wasm_setenv = Module.cwrap ('mono_wasm_setenv', 'void', ['string', 'string']);
 		for (var variable in setenv) {
 			MONO.mono_wasm_setenv (variable, setenv [variable]);
+		}
+
+		// Read and write files to virtual file system listed in mono-config
+		if (typeof config.files_to_map != 'undefined') {
+			Module.print("Mapping test support files listed in config.files_to_map to VFS");
+			const files_to_map = config.files_to_map;
+			try {
+				for (var i = 0; i < files_to_map.length; i++)
+				{
+					if (typeof files_to_map[i].directory != 'undefined')
+					{
+						var directory = files_to_map[i].directory == '' ? '/' : files_to_map[i].directory;
+						if (directory != '/') {
+							Module['FS_createPath']('/', directory, true, true);
+						}
+
+						const files = files_to_map[i].files;
+						for (var j = 0; j < files.length; j++)
+						{
+							var fullPath = directory != '/' ? directory + '/' + files[j] : files[j];
+							var content = new Uint8Array (read ("supportFiles/" + fullPath, 'binary'));
+							writeContentToFile(content, fullPath);
+						}
+					}
+				}
+			}
+			catch (err) {
+				Module.printErr(err);
+				Module.printErr(err.stack);
+				test_exit(1);
+			}
 		}
 
 		if (enable_gc) {
@@ -198,51 +236,47 @@ var Module = {
 			var metadata = JSON.parse(read ("mono-webassembly-zoneinfo-fs-smd.js.metadata", 'utf-8'));
 			var files = metadata.files;
 			for (var i = 0; i < files.length; ++i) {
-				console.log(files[i].start, files[i].end)
 				var byteArray = zoneInfoData.subarray(files[i].start, files[i].end);
-				console.log(files[i].filename)
-				var stream = FS.open("/usr/share" + files[i].filename, 'w+');
-				FS.write(stream, byteArray, 0, byteArray.length, 0);
-				FS.close(stream);
+				writeContentToFile(byteArray, "/usr/share" + files[i].filename);
 			}
-			console.log("DONE");
-		};
+		}
+		MONO.mono_load_runtime_and_bcl (
+			config.vfs_prefix,
+			config.deploy_prefix,
+			config.enable_debugging,
+			config.assembly_list,
+			function () {
+				App.init ();
+			},
+			function (asset)
+			{
+			  // for testing purposes add BCL assets to VFS until we special case File.Open
+			  // to identify when an assembly from the BCL is being open and resolve it correctly.
+			  var content = new Uint8Array (read (asset, 'binary'));
+			  var path = asset.substr(config.deploy_prefix.length);
+			  writeContentToFile(content, path);
 
-		config.loaded_cb = function () {
-			App.init ();
-		};
-		config.fetch_file_cb = function (asset) {
-		  if (typeof window != 'undefined') {
-			return fetch (asset, { credentials: 'same-origin' });
-		  } else {
-			// The default mono_load_runtime_and_bcl defaults to using
-			// fetch to load the assets.  It also provides a way to set a
-			// fetch promise callback.
-			// Here we wrap the file read in a promise and fake a fetch response
-			// structure.
-			return new Promise ((resolve, reject) => {
-				var bytes = null, error = null;
-				try {
-					bytes = read (asset, 'binary');
-				} catch (exc) {
-					error = exc;
-				}
-				var response = { ok: (bytes && !error), url: asset,
-					arrayBuffer: function () {
-						return new Promise ((resolve2, reject2) => {
-							if (error)
-								reject2 (error);
-							else
-								resolve2 (new Uint8Array (bytes));
+			  if (typeof window != 'undefined') {
+				return fetch (asset, { credentials: 'same-origin' });
+			  } else {
+				// The default mono_load_runtime_and_bcl defaults to using
+				// fetch to load the assets.  It also provides a way to set a 
+				// fetch promise callback.
+				// Here we wrap the file read in a promise and fake a fetch response
+				// structure.
+				return new Promise((resolve, reject) => {
+						var response = { ok: true, url: asset,
+							arrayBuffer: function() {
+								return new Promise((resolve2, reject2) => {
+									resolve2(content);
+							}
+						)}
 					}
-				)}
-				}
-			   resolve (response);
-			 })
-		  }
-		};
-
-		MONO.mono_load_runtime_and_bcl_args (config);
+				   resolve(response)
+				 })
+			  }
+			}
+		);
 	},
 };
 
