@@ -29,6 +29,10 @@
              AssemblyFile="$(ArtifactsBinDir)WasmAppBuilder\$(Configuration)\$(NetCoreAppCurrent)\publish\WasmAppBuilder.dll"/>
 
   <Target Name="BuildApp" DependsOnTargets="RebuildWasmAppBuilder;Build">
+  <ItemGroup>
+      <WasmFilesToIncludeInFileSystem Include="@(ContentWithTargetPath)" />
+      <WasmFilesToIncludeInFileSystem Include="@(ReferenceCopyLocalPaths)" Condition="'%(ReferenceCopyLocalPaths.BuildReference)' == 'true'" />
+    </ItemGroup>
     <ItemGroup>
       <AssemblySearchPaths Include="bin"/>
       <AssemblySearchPaths Include="$(MicrosoftNetCoreAppRuntimePackDir)native"/>
@@ -47,10 +51,13 @@
       MainAssembly="bin\WasmSample.dll"
       MainJS="$(MonoProjectRoot)wasm\runtime-test.js"
       AssemblySearchPaths="@(AssemblySearchPaths)"
+      FilesToIncludeInFileSystem="@(WasmFilesToIncludeInFileSystem)"
       AssetSources="@(AssetSources)"
       Assets="@(Assets)" />
     <Exec Command="chmod a+x $(AppDir)/run-v8.sh" />
   </Target>
+
+  
 
   <ItemGroup>
     <PackageReference Include="xunit" Version="2.4.0" />
