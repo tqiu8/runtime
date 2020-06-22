@@ -1,0 +1,5 @@
+export PATH="/Users/tammyqiu/emsdk:/Users/tammyqiu/emsdk/upstream/emscripten:/Users/tammyqiu/emsdk/node/12.9.1_64bit/bin:/Users/tammyqiu/Desktop/Desktop/runtime/.dotnet:/Users/tammyqiu/.jsvu:/Users/tammyqiu/misc/bin://anaconda3/bin://anaconda3/condabin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/share/dotnet:/Users/tammyqiu/.dotnet/tools"
+export EMSDK="/Users/tammyqiu/emsdk"
+export EM_CONFIG="/Users/tammyqiu/emsdk/.emscripten"
+export EM_CACHE="/Users/tammyqiu/emsdk/upstream/emscripten/cache"
+export EMSDK_NODE="/Users/tammyqiu/emsdk/node/12.9.1_64bit/bin/node"

@@ -106,6 +106,10 @@
       <Uri>https://github.com/dotnet/runtime-assets</Uri>
       <Sha>7d3354c883065ddd323bde266115c321ba54f98d</Sha>
     </Dependency>
+    <Dependency Name="System.Runtime.TestData" Version="5.0.0-beta.20319.2">
+      <Uri>https://github.com/dotnet/runtime-assets</Uri>
+      <Sha>629993236116221fba87fe1de6d7893dd02c3722</Sha>
+    </Dependency>
     <Dependency Name="System.Private.Runtime.UnicodeData" Version="5.0.0-beta.20312.1">
       <Uri>https://github.com/dotnet/runtime-assets</Uri>
       <Sha>7d3354c883065ddd323bde266115c321ba54f98d</Sha>
