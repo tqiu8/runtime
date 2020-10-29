@@ -402,11 +402,9 @@ namespace System.Runtime.InteropServices.JavaScript.Http.Tests
             var client = new HttpClient ();
             Assert.StartsWith ("blob:", HelperMarshal._stringResource);
 
-            HttpRequestMessage rm = new HttpRequestMessage(HttpMethod.Get, new Uri (HelperMarshal._stringResource));
-            HttpResponseMessage resp = await client.SendAsync (rm);
-            Assert.NotNull (resp.Content);
-            string content = await resp.Content.ReadAsStringAsync();
-            Assert.Equal (59, content.Length);
+            var rm = new HttpRequestMessage(HttpMethod.Get, new Uri (HelperMarshal._stringResource));
+            var resp = client.SendAsync (rm);
+            var resp2 = await resp;
         }
 
         [Fact]

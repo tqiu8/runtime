@@ -364,17 +364,24 @@ var App = {
 			}
 
 			try {
-				let exit_code = Module.mono_call_assembly_entry_point("WasmSample", [app_args]);
+				// Automatic signature isn't working correctly
+				let exit_code = Module.mono_call_assembly_entry_point(main_assembly_name, [app_args], "mi");
 
 				if (isThenable(exit_code))
 				{
 					exit_code.then(
 						(result) => {
 							test_exit (result);
+						},
+						reason => {
+							console.error (reason);
+							test_exit (1);
 						}
 					)
+				} else {
+					test_exit (exit_code);
+					return;
 				}
-				test_exit (exit_code);
 			} catch (ex) {
 				print ("JS exception: " + ex);
 				print (ex.stack);
