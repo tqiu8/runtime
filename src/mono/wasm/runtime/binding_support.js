@@ -143,28 +143,9 @@ var BindingSupportLib = {
 			this.safehandle_get_handle = get_method ("SafeHandleGetHandle");
 			this.safehandle_release_by_handle = get_method ("SafeHandleReleaseByHandle");
 
-			this._are_promises_supported = ((typeof Promise === "object") || (typeof Promise === "function")) && (typeof Promise.resolve === "function");
-		},
+			this.find_underlying_entry_point = get_method ("FindUnderlyingEntrypoint");
 
-		js_string_to_mono_string: function (string) {
-			var buffer = Module._malloc ((string.length + 1) * 2);
-			var buffer16 = (buffer / 2) | 0;
-			for (var i = 0; i < string.length; i++)
-				Module.HEAP16[buffer16 + i] = string.charCodeAt (i);
-			Module.HEAP16[buffer16 + string.length] = 0;
-			var result = this.mono_wasm_string_from_utf16 (buffer, string.length);
-			Module._free (buffer);
-			return result;
-		},
-
-		find_method: function (klass, name, n) {
-			var result = this._find_method(klass, name, n);
-			if (result) {
-				if (!this._method_descriptions)
-					this._method_descriptions = new Map();
-				this._method_descriptions.set(result, name);
-			}
-			return result;
+			this.init = true;
 		},
 
 		get_js_obj: function (js_handle) {
@@ -1435,6 +1416,15 @@ var BindingSupportLib = {
 			if (!method)
 				throw new Error ("Could not find entry point for assembly: " + assembly);
 
+			// For async entry methods we need to drill down to the async method.
+			var underlying_entry_point = this.call_method(this.find_underlying_entry_point, null, "is", [ method ]);
+			if (underlying_entry_point)
+			{
+				method = this.resolve_method_fqn(underlying_entry_point);
+				if (!method)
+					throw new Error ("Could not find entry point for assembly: " + assembly);
+			}
+
 			if (typeof signature === "undefined")
 				signature = Module.mono_method_get_call_signature (method);
 
@@ -1452,6 +1442,15 @@ var BindingSupportLib = {
 			var method = this.assembly_get_entry_point(asm);
 			if (!method)
 				throw new Error ("Could not find entry point for assembly: " + assembly);
+
+			// For async entry methods we need to drill down to the async method.
+			var underlying_entry_point = this.call_method(this.find_underlying_entry_point, null, "is", [ method ]);
+			if (underlying_entry_point)
+			{
+				method = this.resolve_method_fqn(underlying_entry_point);
+				if (!method)
+					throw new Error ("Could not find entry point for assembly: " + assembly);
+			}
 
 			if (typeof signature === "undefined")
 				signature = Module.mono_method_get_call_signature (method);
