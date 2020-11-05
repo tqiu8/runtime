@@ -307,6 +307,213 @@ namespace System.Runtime.InteropServices.JavaScript.Tests
             _taDouble = ((Float64Array)obj.GetObjectProperty("typedArray")).ToArray();
         }
 
+        private static void SetUint8ClampedArray(JSObject obj, int length)
+        {
+            var clamped = new byte[length];
+            obj.SetObjectProperty("clampedArray", Uint8ClampedArray.From(clamped));
+        }
+
+        internal static Uint8ClampedArray _caUInt;
+        private static void GetUint8ClampedArray(JSObject obj)
+        {
+            _caUInt = (Uint8ClampedArray)obj.GetObjectProperty("clampedArray");
+        }
+        
+        private static void SetUint8Array(JSObject obj, int length)
+        {
+            var array = new byte[length];
+            obj.SetObjectProperty("uint8Array", Uint8Array.From(array));
+        }
+
+        internal static Uint8Array _uint8Array;
+        private static void GetUint8Array(JSObject obj)
+        {
+            _uint8Array = (Uint8Array)obj.GetObjectProperty("uint8Array");
+        }
+
+        private static void SetUint16Array(JSObject obj, int length)
+        {
+            var array = new ushort[length];
+            obj.SetObjectProperty("uint16Array", Uint16Array.From(array));
+        }
+
+        internal static Uint16Array _uint16Array;
+        private static void GetUint16Array(JSObject obj)
+        {
+            _uint16Array = (Uint16Array)obj.GetObjectProperty("uint16Array");
+        }
+
+        private static void SetUint32Array(JSObject obj, int length)
+        {
+            var array = new uint[length];
+            obj.SetObjectProperty("uint32Array", Uint32Array.From(array));
+        }
+
+        internal static Uint32Array _uint32Array;
+        private static void GetUint32Array(JSObject obj)
+        {
+            _uint32Array = (Uint32Array)obj.GetObjectProperty("uint32Array");
+        }
+
+        private static void SetInt8Array(JSObject obj, int length)
+        {
+            var array = new sbyte[length];
+            obj.SetObjectProperty("int8Array", Int8Array.From(array));
+        }
+
+        internal static Int8Array _int8Array;
+        private static void GetInt8Array(JSObject obj)
+        {
+            _int8Array = (Int8Array)obj.GetObjectProperty("int8Array");
+        }
+
+        private static void SetInt16Array(JSObject obj, int length)
+        {
+            var array = new short[length];
+            obj.SetObjectProperty("int16Array", Int16Array.From(array));
+        }
+
+        internal static Int16Array _int16Array;
+        private static void GetInt16Array(JSObject obj)
+        {
+            _int16Array = (Int16Array)obj.GetObjectProperty("int16Array");
+        }
+
+        private static void SetInt32Array(JSObject obj, int length)
+        {
+            var array = new int[length];
+            obj.SetObjectProperty("int32Array", Int32Array.From(array));
+        }
+
+        internal static Int32Array _int32Array;
+        private static void GetInt32Array(JSObject obj)
+        {
+            _int32Array = (Int32Array)obj.GetObjectProperty("int32Array");
+        }
+
+        private static void SetFloat32Array(JSObject obj, int length)
+        {
+            var array = new float[length];
+            obj.SetObjectProperty("float32Array", Float32Array.From(array));
+        }
+
+        internal static Float32Array _float32Array;
+        private static void GetFloat32Array(JSObject obj)
+        {
+            _float32Array = (Float32Array)obj.GetObjectProperty("float32Array");
+        }
+
+        private static void SetFloat64Array(JSObject obj, int length)
+        {
+            var array = new double[length];
+            obj.SetObjectProperty("float64Array", Float64Array.From(array));
+        }
+
+        internal static Float64Array _float64Array;
+        private static void GetFloat64Array(JSObject obj)
+        {
+            _float64Array = (Float64Array)obj.GetObjectProperty("float64Array");
+        }
+
+        private static void SetUint8ClampedArrayFromSharedArrayBuffer(JSObject obj, int length)
+        {
+            obj.SetObjectProperty("clampedArrayFromSharedArrayBuffer", new Uint8ClampedArray(new SharedArrayBuffer(length)));
+        }
+
+        internal static Uint8ClampedArray _caFromSharedArrayBuffer;
+        private static void GetUint8ClampedArrayFromSharedArrayBuffer(JSObject obj)
+        {
+            _caFromSharedArrayBuffer = (Uint8ClampedArray)obj.GetObjectProperty("clampedArrayFromSharedArrayBuffer");
+        }
+
+        private static void SetUint8ArrayFromSharedArrayBuffer(JSObject obj, int length)
+        {
+            obj.SetObjectProperty("uint8ArrayFromSharedArrayBuffer", new Uint8Array(new SharedArrayBuffer(length)));
+        }
+
+        internal static Uint8Array _uint8FromSharedArrayBuffer;
+        private static void GetUint8ArrayFromSharedArrayBuffer(JSObject obj)
+        {
+            _uint8FromSharedArrayBuffer = (Uint8Array)obj.GetObjectProperty("uint8ArrayFromSharedArrayBuffer");
+        }
+
+        private static void SetUint16ArrayFromSharedArrayBuffer(JSObject obj, int length)
+        {
+            obj.SetObjectProperty("uint16ArrayFromSharedArrayBuffer", new Uint16Array(new SharedArrayBuffer(length)));
+        }
+
+        internal static Uint16Array _uint16FromSharedArrayBuffer;
+        private static void GetUint16ArrayFromSharedArrayBuffer(JSObject obj)
+        {
+            _uint16FromSharedArrayBuffer = (Uint16Array)obj.GetObjectProperty("uint16ArrayFromSharedArrayBuffer");
+        }
+
+        private static void SetUint32ArrayFromSharedArrayBuffer(JSObject obj, int length)
+        {
+            obj.SetObjectProperty("uint32ArrayFromSharedArrayBuffer", new Uint32Array(new SharedArrayBuffer(length)));
+        }
+
+        internal static Uint32Array _uint32FromSharedArrayBuffer;
+        private static void GetUint32ArrayFromSharedArrayBuffer(JSObject obj)
+        {
+            _uint32FromSharedArrayBuffer = (Uint32Array)obj.GetObjectProperty("uint32ArrayFromSharedArrayBuffer");
+        }
+
+        private static void SetInt8ArrayFromSharedArrayBuffer(JSObject obj, int length)
+        {
+            obj.SetObjectProperty("int8ArrayFromSharedArrayBuffer", new Int8Array(new SharedArrayBuffer(length)));
+        }
+
+        internal static Int8Array _int8fromSharedArrayBuffer;
+        private static void GetInt8ArrayFromSharedArrayBuffer(JSObject obj)
+        {
+            _int8fromSharedArrayBuffer = (Int8Array)obj.GetObjectProperty("int8ArrayFromSharedArrayBuffer");
+        }
+
+        private static void SetInt16ArrayFromSharedArrayBuffer(JSObject obj, int length)
+        {
+            obj.SetObjectProperty("int16ArrayFromSharedArrayBuffer", new Int16Array(new SharedArrayBuffer(length)));
+        }
+
+        internal static Int16Array _int16fromSharedArrayBuffer;
+        private static void GetInt16ArrayFromSharedArrayBuffer(JSObject obj)
+        {
+            _int16fromSharedArrayBuffer = (Int16Array)obj.GetObjectProperty("int16ArrayFromSharedArrayBuffer");
+        }
+
+        private static void SetInt32ArrayFromSharedArrayBuffer(JSObject obj, int length)
+        {
+            obj.SetObjectProperty("int32ArrayFromSharedArrayBuffer", new Int32Array(new SharedArrayBuffer(length)));
+        }
+
+        internal static Int32Array _int32fromSharedArrayBuffer;
+        private static void GetInt32ArrayFromSharedArrayBuffer(JSObject obj)
+        {
+            _int32fromSharedArrayBuffer = (Int32Array)obj.GetObjectProperty("int32ArrayFromSharedArrayBuffer");
+        }
+
+        private static void SetFloat32ArrayFromSharedArrayBuffer(JSObject obj, int length)
+        {
+            obj.SetObjectProperty("float32ArrayFromSharedArrayBuffer", new Float32Array(new SharedArrayBuffer(length)));
+        }
+
+        internal static Float32Array _float32fromSharedArrayBuffer;
+        private static void GetFloat32ArrayFromSharedArrayBuffer(JSObject obj)
+        {
+            _float32fromSharedArrayBuffer = (Float32Array)obj.GetObjectProperty("float32ArrayFromSharedArrayBuffer");
+        }
+
+        private static void SetFloat64ArrayFromSharedArrayBuffer(JSObject obj, int length)
+        {
+            obj.SetObjectProperty("float64ArrayFromSharedArrayBuffer", new Float64Array(new SharedArrayBuffer(length)));
+        }
+
+        internal static Float64Array _float64fromSharedArrayBuffer;
+        private static void GetFloat64ArrayFromSharedArrayBuffer(JSObject obj)
+        {
+            _float64fromSharedArrayBuffer = (Float64Array)obj.GetObjectProperty("float64ArrayFromSharedArrayBuffer");
+        }
+
         private static Function _sumFunction;
         private static void CreateFunctionSum()
         {
@@ -346,4 +553,6 @@ namespace System.Runtime.InteropServices.JavaScript.Tests
         }
 
     }
+    
+    
 }

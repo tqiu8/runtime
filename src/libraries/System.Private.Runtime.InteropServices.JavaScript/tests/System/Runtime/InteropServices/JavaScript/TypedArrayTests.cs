@@ -26,6 +26,19 @@ namespace System.Runtime.InteropServices.JavaScript.Tests
             Assert.True(from.Length == 50);
             Assert.Equal("[object Uint8ClampedArray]", objectPrototype.Call(from));
         }
+        
+        [ConditionalTheory(typeof(PlatformDetection), nameof(PlatformDetection.IsBrowserDomSupported))]
+        [MemberData(nameof(Object_Prototype))]
+        public static void Uint8ClampedArrayFrom_Browser(Function objectPrototype)
+        {
+            Runtime.InvokeJS(@"
+                var obj = { };
+                App.call_test_method ( ""SetUint8ClampedArray"", [ obj, 50 ]);
+                App.call_test_method ( ""GetUint8ClampedArray"", [ obj ]);
+            ");
+            Assert.True(HelperMarshal._caUInt.Length == 50);
+            Assert.Equal("[object Uint8ClampedArray]", objectPrototype.Call(HelperMarshal._caUInt));
+        }
 
         [Theory]
         [MemberData(nameof(Object_Prototype))]
@@ -35,6 +48,19 @@ namespace System.Runtime.InteropServices.JavaScript.Tests
             Uint8Array from = Uint8Array.From(array);
             Assert.True(from.Length == 50);
             Assert.Equal("[object Uint8Array]", objectPrototype.Call(from));
+        }
+
+        [ConditionalTheory(typeof(PlatformDetection), nameof(PlatformDetection.IsBrowserDomSupported))]
+        [MemberData(nameof(Object_Prototype))]
+        public static void Uint8ArrayFrom_Browser(Function objectPrototype)
+        {
+            Runtime.InvokeJS(@"
+                var obj = { };
+                App.call_test_method ( ""SetUint8Array"", [ obj, 50 ]);
+                App.call_test_method ( ""GetUint8Array"", [ obj ]);
+            ");
+            Assert.True(HelperMarshal._uint8Array.Length == 50);
+            Assert.Equal("[object Uint8Array]", objectPrototype.Call(HelperMarshal._uint8Array));
         }
 
         [Theory]
@@ -47,6 +73,20 @@ namespace System.Runtime.InteropServices.JavaScript.Tests
             Assert.Equal("[object Uint16Array]", objectPrototype.Call(from));
         }
 
+        [ConditionalTheory(typeof(PlatformDetection), nameof(PlatformDetection.IsBrowserDomSupported))]
+        [MemberData(nameof(Object_Prototype))]
+        public static void Uint16ArrayFrom_Browser(Function objectPrototype)
+        {
+            Runtime.InvokeJS(@"
+                var obj = { };
+                App.call_test_method ( ""SetUint16Array"", [ obj, 50 ]);
+                App.call_test_method ( ""GetUint16Array"", [ obj ]);
+            ");
+            var array = HelperMarshal._uint16Array;
+            Assert.True(array.Length == 50);
+            Assert.Equal("[object Uint16Array]", objectPrototype.Call(array));
+        }
+
         [Theory]
         [MemberData(nameof(Object_Prototype))]
         public static void Uint32ArrayFrom(Function objectPrototype)
@@ -55,6 +95,19 @@ namespace System.Runtime.InteropServices.JavaScript.Tests
             Uint32Array from = Uint32Array.From(array);
             Assert.True(from.Length == 50);
             Assert.Equal("[object Uint32Array]", objectPrototype.Call(from));
+        }
+
+        [ConditionalTheory(typeof(PlatformDetection), nameof(PlatformDetection.IsBrowserDomSupported))]
+        [MemberData(nameof(Object_Prototype))]
+        public static void Uint32ArrayFrom_Browser(Function objectPrototype)
+        {
+            Runtime.InvokeJS(@"
+                var obj = { };
+                App.call_test_method ( ""SetUint32Array"", [ obj, 50 ]);
+                App.call_test_method ( ""GetUint32Array"", [ obj ]);
+            ");
+            Assert.True(HelperMarshal._uint32Array.Length == 50);
+            Assert.Equal("[object Uint32Array]", objectPrototype.Call(HelperMarshal._uint32Array));
         }
 
         [Theory]
@@ -67,6 +120,19 @@ namespace System.Runtime.InteropServices.JavaScript.Tests
             Assert.Equal("[object Int8Array]", objectPrototype.Call(from));
         }
 
+        [ConditionalTheory(typeof(PlatformDetection), nameof(PlatformDetection.IsBrowserDomSupported))]
+        [MemberData(nameof(Object_Prototype))]
+        public static void Int8ArrayFrom_Browser(Function objectPrototype)
+        {
+            Runtime.InvokeJS(@"
+                var obj = { };
+                App.call_test_method ( ""SetInt8Array"", [ obj, 50 ]);
+                App.call_test_method ( ""GetInt8Array"", [ obj ]);
+            ");
+            Assert.True(HelperMarshal._int8Array.Length == 50);
+            Assert.Equal("[object Int8Array]", objectPrototype.Call(HelperMarshal._int8Array));
+        }
+
         [Theory]
         [MemberData(nameof(Object_Prototype))]
         public static void Int16ArrayFrom(Function objectPrototype)
@@ -75,6 +141,19 @@ namespace System.Runtime.InteropServices.JavaScript.Tests
             Int16Array from = Int16Array.From(array);
             Assert.True(from.Length == 50);
             Assert.Equal("[object Int16Array]", objectPrototype.Call(from));
+        }
+
+        [ConditionalTheory(typeof(PlatformDetection), nameof(PlatformDetection.IsBrowserDomSupported))]
+        [MemberData(nameof(Object_Prototype))]
+        public static void Int16ArrayFrom_Browser(Function objectPrototype)
+        {
+            Runtime.InvokeJS(@"
+                var obj = { };
+                App.call_test_method ( ""SetInt16Array"", [ obj, 50 ]);
+                App.call_test_method ( ""GetInt16Array"", [ obj ]);
+            ");
+            Assert.True(HelperMarshal._int16Array.Length == 50);
+            Assert.Equal("[object Int16Array]", objectPrototype.Call(HelperMarshal._int16Array));
         }
 
         [Theory]
@@ -87,6 +166,19 @@ namespace System.Runtime.InteropServices.JavaScript.Tests
             Assert.Equal("[object Int32Array]", objectPrototype.Call(from));
         }
 
+        [ConditionalTheory(typeof(PlatformDetection), nameof(PlatformDetection.IsBrowserDomSupported))]
+        [MemberData(nameof(Object_Prototype))]
+        public static void Int32ArrayFrom_Browser(Function objectPrototype)
+        {
+            Runtime.InvokeJS(@"
+                var obj = { };
+                App.call_test_method ( ""SetInt32Array"", [ obj, 50 ]);
+                App.call_test_method ( ""GetInt32Array"", [ obj ]);
+            ");
+            Assert.True(HelperMarshal._int32Array.Length == 50);
+            Assert.Equal("[object Int32Array]", objectPrototype.Call(HelperMarshal._int32Array));
+        }
+
         [Theory]
         [MemberData(nameof(Object_Prototype))]
         public static void Float32ArrayFrom(Function objectPrototype)
@@ -95,6 +187,19 @@ namespace System.Runtime.InteropServices.JavaScript.Tests
             Float32Array from = Float32Array.From(array);
             Assert.True(from.Length == 50);
             Assert.Equal("[object Float32Array]", objectPrototype.Call(from));
+        }
+
+        [ConditionalTheory(typeof(PlatformDetection), nameof(PlatformDetection.IsBrowserDomSupported))]
+        [MemberData(nameof(Object_Prototype))]
+        public static void Float32ArrayFrom_Browser(Function objectPrototype)
+        {
+            Runtime.InvokeJS(@"
+                var obj = { };
+                App.call_test_method ( ""SetFloat32Array"", [ obj, 50 ]);
+                App.call_test_method ( ""GetFloat32Array"", [ obj ]);
+            ");
+            Assert.True(HelperMarshal._float32Array.Length == 50);
+            Assert.Equal("[object Float32Array]", objectPrototype.Call(HelperMarshal._float32Array));
         }
 
         [Theory]
@@ -107,6 +212,19 @@ namespace System.Runtime.InteropServices.JavaScript.Tests
             Assert.Equal("[object Float64Array]", objectPrototype.Call(from));
         }
 
+        [ConditionalTheory(typeof(PlatformDetection), nameof(PlatformDetection.IsBrowserDomSupported))]
+        [MemberData(nameof(Object_Prototype))]
+        public static void Float64ArrayFrom_Browser(Function objectPrototype)
+        {
+            Runtime.InvokeJS(@"
+                var obj = { };
+                App.call_test_method ( ""SetFloat64Array"", [ obj, 50 ]);
+                App.call_test_method ( ""GetFloat64Array"", [ obj ]);
+            ");
+            Assert.True(HelperMarshal._float64Array.Length == 50);
+            Assert.Equal("[object Float64Array]", objectPrototype.Call(HelperMarshal._float64Array));
+        }
+
         [Theory]
         [MemberData(nameof(Object_Prototype))]
         public static void Uint8ClampedArrayFromSharedArrayBuffer(Function objectPrototype)
@@ -114,6 +232,19 @@ namespace System.Runtime.InteropServices.JavaScript.Tests
             Uint8ClampedArray from = new Uint8ClampedArray(new SharedArrayBuffer(50));
             Assert.True(from.Length == 50);
             Assert.Equal("[object Uint8ClampedArray]", objectPrototype.Call(from));
+        }
+
+        [ConditionalTheory(typeof(PlatformDetection), nameof(PlatformDetection.IsBrowserDomSupported))]
+        [MemberData(nameof(Object_Prototype))]
+        public static void Uint8ClampedArrayFromSharedArrayBuffer_Browser(Function objectPrototype)
+        {
+            Runtime.InvokeJS(@"
+                var obj = { };
+                App.call_test_method ( ""SetUint8ClampedArrayFromSharedArrayBuffer"", [ obj, 50 ]);
+                App.call_test_method ( ""GetUint8ClampedArrayFromSharedArrayBuffer"", [ obj ]);
+            ");
+            Assert.True(HelperMarshal._caFromSharedArrayBuffer.Length == 50);
+            Assert.Equal("[object Uint8ClampedArray]", objectPrototype.Call(HelperMarshal._caFromSharedArrayBuffer));
         }
 
         [Theory]
@@ -125,6 +256,19 @@ namespace System.Runtime.InteropServices.JavaScript.Tests
             Assert.Equal("[object Uint8Array]", objectPrototype.Call(from));
         }
 
+        [ConditionalTheory(typeof(PlatformDetection), nameof(PlatformDetection.IsBrowserDomSupported))]
+        [MemberData(nameof(Object_Prototype))]
+        public static void Uint8ArrayFromSharedArrayBuffer_Browser(Function objectPrototype)
+        {
+            Runtime.InvokeJS(@"
+                var obj = { };
+                App.call_test_method ( ""SetUint8ArrayFromSharedArrayBuffer"", [ obj, 50 ]);
+                App.call_test_method ( ""GetUint8ArrayFromSharedArrayBuffer"", [ obj ]);
+            ");
+            Assert.True(HelperMarshal._uint8FromSharedArrayBuffer.Length == 50);
+            Assert.Equal("[object Uint8Array]", objectPrototype.Call(HelperMarshal._uint8FromSharedArrayBuffer));
+        }
+
         [Theory]
         [MemberData(nameof(Object_Prototype))]
         public static void Uint16ArrayFromSharedArrayBuffer(Function objectPrototype)
@@ -132,6 +276,19 @@ namespace System.Runtime.InteropServices.JavaScript.Tests
             Uint16Array from = new Uint16Array(new SharedArrayBuffer(50));
             Assert.True(from.Length == 25);
             Assert.Equal("[object Uint16Array]", objectPrototype.Call(from));
+        }
+
+        [ConditionalTheory(typeof(PlatformDetection), nameof(PlatformDetection.IsBrowserDomSupported))]
+        [MemberData(nameof(Object_Prototype))]
+        public static void Uint16ArrayFromSharedArrayBuffer_Browser(Function objectPrototype)
+        {
+            Runtime.InvokeJS(@"
+                var obj = { };
+                App.call_test_method ( ""SetUint16ArrayFromSharedArrayBuffer"", [ obj, 50 ]);
+                App.call_test_method ( ""GetUint16ArrayFromSharedArrayBuffer"", [ obj ]);
+            ");
+            Assert.True(HelperMarshal._uint16FromSharedArrayBuffer.Length == 25);
+            Assert.Equal("[object Uint16Array]", objectPrototype.Call(HelperMarshal._uint16FromSharedArrayBuffer));
         }
 
         [Theory]
@@ -143,6 +300,19 @@ namespace System.Runtime.InteropServices.JavaScript.Tests
             Assert.Equal("[object Uint32Array]", objectPrototype.Call(from));
         }
 
+        [ConditionalTheory(typeof(PlatformDetection), nameof(PlatformDetection.IsBrowserDomSupported))]
+        [MemberData(nameof(Object_Prototype))]
+        public static void Uint32ArrayFromSharedArrayBuffer_Browser(Function objectPrototype)
+        {
+            Runtime.InvokeJS(@"
+                var obj = { };
+                App.call_test_method ( ""SetUint32ArrayFromSharedArrayBuffer"", [ obj, 40 ]);
+                App.call_test_method ( ""GetUint32ArrayFromSharedArrayBuffer"", [ obj ]);
+            ");
+            Assert.True(HelperMarshal._uint32FromSharedArrayBuffer.Length == 10);
+            Assert.Equal("[object Uint32Array]", objectPrototype.Call(HelperMarshal._uint32FromSharedArrayBuffer));
+        }
+
         [Theory]
         [MemberData(nameof(Object_Prototype))]
         public static void Int8ArrayFromSharedArrayBuffer(Function objectPrototype)
@@ -150,6 +320,19 @@ namespace System.Runtime.InteropServices.JavaScript.Tests
             Int8Array from = new Int8Array(new SharedArrayBuffer(50));
             Assert.True(from.Length == 50);
             Assert.Equal("[object Int8Array]", objectPrototype.Call(from));
+        }
+
+        [ConditionalTheory(typeof(PlatformDetection), nameof(PlatformDetection.IsBrowserDomSupported))]
+        [MemberData(nameof(Object_Prototype))]
+        public static void Int8ArrayFromSharedArrayBuffer_Browser(Function objectPrototype)
+        {
+            Runtime.InvokeJS(@"
+                var obj = { };
+                App.call_test_method ( ""SetInt8ArrayFromSharedArrayBuffer"", [ obj, 50 ]);
+                App.call_test_method ( ""GetInt8ArrayFromSharedArrayBuffer"", [ obj ]);
+            ");
+            Assert.True(HelperMarshal._int8fromSharedArrayBuffer.Length == 50);
+            Assert.Equal("[object Int8Array]", objectPrototype.Call(HelperMarshal._int8fromSharedArrayBuffer));
         }
 
         [Theory]
@@ -161,6 +344,19 @@ namespace System.Runtime.InteropServices.JavaScript.Tests
             Assert.Equal("[object Int16Array]", objectPrototype.Call(from));
         }
 
+        [ConditionalTheory(typeof(PlatformDetection), nameof(PlatformDetection.IsBrowserDomSupported))]
+        [MemberData(nameof(Object_Prototype))]
+        public static void Int16ArrayFromSharedArrayBuffer_Browser(Function objectPrototype)
+        {
+            Runtime.InvokeJS(@"
+                var obj = { };
+                App.call_test_method ( ""SetInt16ArrayFromSharedArrayBuffer"", [ obj, 50 ]);
+                App.call_test_method ( ""GetInt16ArrayFromSharedArrayBuffer"", [ obj ]);
+            ");
+            Assert.True(HelperMarshal._int16fromSharedArrayBuffer.Length == 25);
+            Assert.Equal("[object Int16Array]", objectPrototype.Call(HelperMarshal._int16fromSharedArrayBuffer));
+        }
+
         [Theory]
         [MemberData(nameof(Object_Prototype))]
         public static void Int32ArrayFromSharedArrayBuffer(Function objectPrototype)
@@ -168,6 +364,19 @@ namespace System.Runtime.InteropServices.JavaScript.Tests
             Int32Array from = new Int32Array(new SharedArrayBuffer(40));
             Assert.True(from.Length == 10);
             Assert.Equal("[object Int32Array]", objectPrototype.Call(from));
+        }
+
+        [ConditionalTheory(typeof(PlatformDetection), nameof(PlatformDetection.IsBrowserDomSupported))]
+        [MemberData(nameof(Object_Prototype))]
+        public static void Int32ArrayFromSharedArrayBuffer_Browser(Function objectPrototype)
+        {
+            Runtime.InvokeJS(@"
+                var obj = { };
+                App.call_test_method ( ""SetInt32ArrayFromSharedArrayBuffer"", [ obj, 40 ]);
+                App.call_test_method ( ""GetInt32ArrayFromSharedArrayBuffer"", [ obj ]);
+            ");
+            Assert.True(HelperMarshal._int32fromSharedArrayBuffer.Length == 10);
+            Assert.Equal("[object Int32Array]", objectPrototype.Call(HelperMarshal._int32fromSharedArrayBuffer));
         }
 
         [Theory]
@@ -179,6 +388,19 @@ namespace System.Runtime.InteropServices.JavaScript.Tests
             Assert.Equal("[object Float32Array]", objectPrototype.Call(from));
         }
 
+        [ConditionalTheory(typeof(PlatformDetection), nameof(PlatformDetection.IsBrowserDomSupported))]
+        [MemberData(nameof(Object_Prototype))]
+        public static void Float32ArrayFromSharedArrayBuffer_Browser(Function objectPrototype)
+        {
+            Runtime.InvokeJS(@"
+                var obj = { };
+                App.call_test_method ( ""SetFloat32ArrayFromSharedArrayBuffer"", [ obj, 40 ]);
+                App.call_test_method ( ""GetFloat32ArrayFromSharedArrayBuffer"", [ obj ]);
+            ");
+            Assert.True(HelperMarshal._float32fromSharedArrayBuffer.Length == 10);
+            Assert.Equal("[object Float32Array]", objectPrototype.Call(HelperMarshal._float32fromSharedArrayBuffer));
+        }
+
         [Theory]
         [MemberData(nameof(Object_Prototype))]
         public static void Float64ArrayFromSharedArrayBuffer(Function objectPrototype)
@@ -186,6 +408,19 @@ namespace System.Runtime.InteropServices.JavaScript.Tests
             Float64Array from = new Float64Array(new SharedArrayBuffer(40));
             Assert.True(from.Length == 5);
             Assert.Equal("[object Float64Array]", objectPrototype.Call(from));
+        }
+
+        [ConditionalTheory(typeof(PlatformDetection), nameof(PlatformDetection.IsBrowserDomSupported))]
+        [MemberData(nameof(Object_Prototype))]
+        public static void Float64ArrayFromSharedArrayBuffer_Browser(Function objectPrototype)
+        {
+            Runtime.InvokeJS(@"
+                var obj = { };
+                App.call_test_method ( ""SetFloat64ArrayFromSharedArrayBuffer"", [ obj, 40 ]);
+                App.call_test_method ( ""GetFloat64ArrayFromSharedArrayBuffer"", [ obj ]);
+            ");
+            Assert.True(HelperMarshal._float64fromSharedArrayBuffer.Length == 5);
+            Assert.Equal("[object Float64Array]", objectPrototype.Call(HelperMarshal._float64fromSharedArrayBuffer));
         }
 
         [Theory]
