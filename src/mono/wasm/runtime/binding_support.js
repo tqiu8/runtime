@@ -143,7 +143,28 @@ var BindingSupportLib = {
 			this.safehandle_get_handle = get_method ("SafeHandleGetHandle");
 			this.safehandle_release_by_handle = get_method ("SafeHandleReleaseByHandle");
 
-			this.init = true;
+			this._are_promises_supported = ((typeof Promise === "object") || (typeof Promise === "function")) && (typeof Promise.resolve === "function");
+		},
+
+		js_string_to_mono_string: function (string) {
+			var buffer = Module._malloc ((string.length + 1) * 2);
+			var buffer16 = (buffer / 2) | 0;
+			for (var i = 0; i < string.length; i++)
+				Module.HEAP16[buffer16 + i] = string.charCodeAt (i);
+			Module.HEAP16[buffer16 + string.length] = 0;
+			var result = this.mono_wasm_string_from_utf16 (buffer, string.length);
+			Module._free (buffer);
+			return result;
+		},
+
+		find_method: function (klass, name, n) {
+			var result = this._find_method(klass, name, n);
+			if (result) {
+				if (!this._method_descriptions)
+					this._method_descriptions = new Map();
+				this._method_descriptions.set(result, name);
+			}
+			return result;
 		},
 
 		get_js_obj: function (js_handle) {

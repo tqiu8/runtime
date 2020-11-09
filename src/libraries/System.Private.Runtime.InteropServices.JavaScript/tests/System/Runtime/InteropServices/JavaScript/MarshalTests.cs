@@ -527,11 +527,7 @@ namespace System.Runtime.InteropServices.JavaScript.Tests
         [Fact]
         public static void MarshalTypedArrayByte()
         {
-            Runtime.InvokeJS(@"
-                var obj = { };
-                App.call_test_method (""SetTypedArrayByte"", [ obj ]);
-                App.call_test_method (""GetTypedArrayByte"", [ obj ]);
-            ");
+            RunMarshalTypedArrayJS("Byte");
             Assert.Equal(17, HelperMarshal._taByte.Length);
             Assert.Equal(104, HelperMarshal._taByte[0]);
             Assert.Equal(115, HelperMarshal._taByte[HelperMarshal._taByte.Length - 1]);
