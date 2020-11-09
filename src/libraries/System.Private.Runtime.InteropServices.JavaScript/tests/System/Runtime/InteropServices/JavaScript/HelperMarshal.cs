@@ -591,4 +591,6 @@ namespace System.Runtime.InteropServices.JavaScript.Tests
         Five = 5,
         BigValue = 0xFFFFFFFEu
     }
+    
+    
 }
