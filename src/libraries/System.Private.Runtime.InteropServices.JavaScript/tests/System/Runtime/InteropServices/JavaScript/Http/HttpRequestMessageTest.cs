@@ -428,7 +428,6 @@ namespace System.Runtime.InteropServices.JavaScript.Http.Tests
             ");
             var client = new HttpClient ();
             Assert.StartsWith ("blob:", HelperMarshal._stringResource);
-            Console.WriteLine(HelperMarshal._stringResource);
             HttpRequestMessage rm = new HttpRequestMessage(HttpMethod.Get, new Uri (HelperMarshal._stringResource));
             HttpResponseMessage resp = await client.SendAsync (rm);
             Assert.NotNull (resp.Content);
@@ -437,26 +436,47 @@ namespace System.Runtime.InteropServices.JavaScript.Http.Tests
         }
 
         [ConditionalFact(typeof(PlatformDetection), nameof(PlatformDetection.IsBrowserDomSupported))]
-        public async Task BlobUri_Marshal_CorrectHeader_Browser()
+        public async Task BlobUri_Marshal_InvalidUrl_Browser()
         {
             Runtime.InvokeJS(@"
-                function JSONToURL(obj) {
-                    return URL.createObjectURL(new Blob([JSON.stringify(obj)], {type: 'application/json'}))
+                function objToURL(obj, mimeType) {
+                    return URL.createObjectURL(new Blob([obj], {type: mimeType}))
                 }
-
-                const obj = {hello: 'world'};
-                const url = JSONToURL (obj);
+                var img = document.createElement('img');
+                img.src = 'test.jpg'
+                const url = objToURL(img, 'image/jpg')
                 App.call_test_method (""InvokeString"", [ url ]);
-            ");
-
+            "); 
             var client = new HttpClient ();
             Assert.StartsWith ("blob:", HelperMarshal._stringResource);
-            Console.WriteLine(HelperMarshal._stringResource);
             HttpRequestMessage rm = new HttpRequestMessage(HttpMethod.Get, new Uri (HelperMarshal._stringResource));
             HttpResponseMessage resp = await client.SendAsync (rm);
-            Assert.NotNull (resp.Content);
-            string content = await resp.Content.ReadAsStringAsync();
+            Console.WriteLine(resp.StatusCode);
+            
+            // Assert.Equal("404", resp.StatusCode);
         }
+
+        // [ConditionalFact(typeof(PlatformDetection), nameof(PlatformDetection.IsBrowserDomSupported))]
+        // public async Task BlobUri_Marshal_CorrectHeader_Browser()
+        // {
+        //     Runtime.InvokeJS(@"
+        //         function JSONToURL(obj) {
+        //             return URL.createObjectURL(new Blob([JSON.stringify(obj)], {type: 'application/json'}))
+        //         }
+
+        //         const obj = {hello: 'world'};
+        //         const url = JSONToURL (obj);
+        //         App.call_test_method (""InvokeString"", [ url ]);
+        //     ");
+
+        //     var client = new HttpClient ();
+        //     Assert.StartsWith ("blob:", HelperMarshal._stringResource);
+        //     Console.WriteLine(HelperMarshal._stringResource);
+        //     HttpRequestMessage rm = new HttpRequestMessage(HttpMethod.Get, new Uri (HelperMarshal._stringResource));
+        //     HttpResponseMessage resp = await client.SendAsync (rm);
+        //     Assert.NotNull (resp.Content);
+        //     string content = await resp.Content.ReadAsStringAsync();
+        // }
 
         [Fact]
         public void BlobStringUri_Marshal_CorrectValues()
