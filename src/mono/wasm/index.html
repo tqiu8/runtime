@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<!--  Licensed to the .NET Foundation under one or more agreements. -->
+<!-- The .NET Foundation licenses this file to you under the MIT license. -->
+<html>
+  <head>
+    <title>TESTS</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  </head>
+  <body>
+    <h3 id="header">Wasm Browser Sample</h3>
+    Result from Sample.Test.TestMeaning: <span id="out"></span>
+    <script type='text/javascript'>
+      saveProfile = ()=>  {
+          var a = document.createElement('a');
+          var blob = new Blob([Module.aot_profile_data]);
+          a.href = URL.createObjectURL(blob);
+          a.download = "data.aotprofile";
+          // Append anchor to body.
+          document.body.appendChild(a);
+          a.click();
+
+          // Remove anchor from body
+          document.body.removeChild(a);
+          return "done"
+      }
+      var App = {
+        init: function () {
+          console.log("hello")
+          if (config.enable_profiler) {
+            BINDING.call_static_method("[WasmTestRunner] SimpleWasmTestRunner:StopProfile", []);
+            saveProfile();
+          }
+        },
+      };
+
+    </script>
+    <script type="text/javascript" src="mono-config.js"></script>
+    <script type="text/javascript" src="profile-runtime.js"></script>
+
+    <script defer src="dotnet.js"></script>
+
+  </body>
+</html>

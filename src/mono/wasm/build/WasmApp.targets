@@ -102,7 +102,7 @@
       AdditionalAssemblySearchPaths="@(_WasmAOTSearchPaths)"
       UseAotDataFile="false"
       AOTProfilePath="$(AOTProfilePath)"
-      Profilers="$(WasmProfilers)"
+      Profilers="@(WasmProfilers)"
       AotModulesTablePath="$(_WasmIntermediateOutputPath)driver-gen.c"
       UseLLVM="true"
       DisableParallelAot="true"
@@ -191,6 +191,11 @@
 
       <WasmNativeAsset Include="$(MicrosoftNetCoreAppRuntimePackRidDir)native\$(WasmIcuDataFileName)" Condition="'$(InvariantGlobalization)' != 'true'" />
       <WasmNativeAsset Include="$(MicrosoftNetCoreAppRuntimePackRidDir)native\dotnet.timezones.blat" />
+    </ItemGroup>
+
+    <ItemGroup Condition="'$(EnableProfiler)' == 'true'">
+      <WasmExtraConfig Include="enable_profiler" Value="true" />
+      <!-- <WasmExtraFilesToDeploy Include="index.html" /> -->
     </ItemGroup>
 
     <WasmAppBuilder
@@ -296,7 +301,7 @@
     <Copy SourceFiles="@(WasmNativeAsset)" DestinationFolder="$(WasmAppDir)" Condition="'$(WasmGenerateAppBundle)' != 'true'" />
   </Target>
 
-  <Target Name="_GenerateDriverGenC" Condition="'$(RunAOTCompilation)' != 'true' and '$(WasmProfilers)' != ''">
+  <Target Name="_GenerateDriverGenC" Condition="'$(RunAOTCompilation)' != 'true'">
     <PropertyGroup>
       <EmccFlags>$(EmccFlags) -DDRIVER_GEN=1</EmccFlags>
       <InitAotProfilerCmd>
@@ -307,7 +312,7 @@ EMSCRIPTEN_KEEPALIVE void mono_wasm_load_profiler_aot (const char *desc) { mono_
       <_DriverGenCPath>$(_WasmIntermediateOutputPath)driver-gen.c</_DriverGenCPath>
     </PropertyGroup>
 
-    <Message Text="Generating $(_DriverGenCPath)" Importance="Low" />
+    <Message Text="Generating $(_DriverGenCPath)" Importance="High" />
     <WriteLinesToFile File="$(_DriverGenCPath)" Overwrite="true" Lines="$(InitAotProfilerCmd)" />
 
     <ItemGroup>

@@ -3,12 +3,16 @@
 
 using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
-
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.DotNet.XHarness.TestRunners.Xunit;
 
 public class SimpleWasmTestRunner : WasmApplicationEntryPoint
 {
+    public static void StopProfile() {
+    }
+
     public static async Task<int> Main(string[] args)
     {
         var testAssembly = args[0];
@@ -57,7 +61,7 @@ public class SimpleWasmTestRunner : WasmApplicationEntryPoint
             IncludedClasses = includedClasses,
             IncludedMethods = includedMethods
         };
-
-        return await runner.Run();
+        var result = await runner.Run();
+        return result;
     }
 }

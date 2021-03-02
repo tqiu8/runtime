@@ -167,8 +167,24 @@ public class WasmAppBuilder : Task
         }
         FileCopyChecked(MainJS!, Path.Join(AppDir, "runtime.js"), string.Empty);
 
-        var html = @"<html><body><script type=""text/javascript"" src=""runtime.js""></script></body></html>";
-        File.WriteAllText(Path.Join(AppDir, "index.html"), html);
+        foreach (ITaskItem extra in ExtraConfig ?? Enumerable.Empty<ITaskItem>())
+        {
+            string name = extra.ItemSpec;
+            if (!TryParseExtraConfigValue(extra, out object? valueObject))
+                return false;
+            config.Extra[name] = valueObject;
+        }
+
+        if (config.Extra.ContainsKey("enable_profiler") && !(bool)config.Extra["enable_profiler"]!)
+        {
+            var html = @"<html><body><script type=""text/javascript"" src=""runtime.js""></script></body></html>";
+            File.WriteAllText(Path.Join(AppDir, "index.html"), html);
+        } else
+        {
+            string? assetPath = Path.GetDirectoryName(MainJS!);
+            FileCopyChecked(Path.Combine(assetPath!, "profile-runtime.js"), Path.Join(AppDir, "profile-runtime.js"), string.Empty);
+            FileCopyChecked(Path.Combine(assetPath!, "index.html"), Path.Join(AppDir, "index.html"), string.Empty);
+        }
 
         foreach (var assembly in _assemblies)
         {
@@ -235,15 +251,6 @@ public class WasmAppBuilder : Task
             foreach (var source in RemoteSources)
                 if (source != null && source.ItemSpec != null)
                     config.RemoteSources.Add(source.ItemSpec);
-        }
-
-        foreach (ITaskItem extra in ExtraConfig ?? Enumerable.Empty<ITaskItem>())
-        {
-            string name = extra.ItemSpec;
-            if (!TryParseExtraConfigValue(extra, out object? valueObject))
-                return false;
-
-            config.Extra[name] = valueObject;
         }
 
         string monoConfigPath = Path.Join(AppDir, "mono-config.js");
